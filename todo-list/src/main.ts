@@ -27,6 +27,7 @@ form?.addEventListener("submit", e => {
 
   addListItem(newTask);
   input.value = ""; //resets the input box to blank
+
   storeTask();
 });
 
@@ -35,6 +36,21 @@ function addListItem(task: Task )
   const item = document.createElement("li");
   const label = document.createElement("label");
   const checkbox = document.createElement("input");
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "X";
+  deleteBtn.classList.add("delete-btn");
+  deleteBtn.style.display = "inline-block";
+  deleteBtn.style.textAlign = "center"; // Add text alignment style
+deleteBtn.style.verticalAlign = "middle"; // Add vertical alignment style
+deleteBtn.style.lineHeight = "1";
+
+  const deleteTask = () => {
+    deleteItem(task);
+    item.remove();
+  }
+
+  deleteBtn.addEventListener("click", deleteTask);
+
   checkbox.addEventListener("change", () => {
     task.completed = checkbox.checked;
     storeTask();
@@ -42,6 +58,7 @@ function addListItem(task: Task )
   checkbox.type = "checkbox";
   checkbox.checked = task.completed;
   label.append(checkbox, task.title);
+  label.appendChild(deleteBtn);
   item.append(label);
   list?.append(item);
 
@@ -49,7 +66,7 @@ function addListItem(task: Task )
 };
 
 function storeTask(){
-  localStorage.setItem("TASKS",JSON.stringify(taskStorage));
+  localStorage.setItem("TASKS",JSON.stringify(taskStorage)); //stores items into local storage under "TASKS".
 }
 
 function loadTask(): Task[]{
@@ -61,9 +78,17 @@ function loadTask(): Task[]{
 }
 
 function resetBoard(){
-  localStorage.clear();
+  localStorage.clear(); //clears the items in local storage. This function resets the whole board.
   if(list){
     list.innerHTML = "";
   }
 }
 reset?.addEventListener("click", resetBoard);
+
+function deleteItem(task: Task){
+  const index = taskStorage.indexOf(task);
+  if(index !== -1){
+    taskStorage.splice(index, 1); // Remove the task from the taskStorage
+    storeTask(); // Save the updated taskStorage to localStorage
+  }
+}

@@ -59,6 +59,11 @@ button:focus-visible {
 }
 
 ul{
-  list-style: none
+  display: flex;
+  flex-direction: column;
 }
 
+.delete-btn{
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
