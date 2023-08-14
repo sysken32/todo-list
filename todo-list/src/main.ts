@@ -90,5 +90,6 @@ function deleteItem(task: Task){
   if(index !== -1){
     taskStorage.splice(index, 1); // Remove the task from the taskStorage
     storeTask(); // Save the updated taskStorage to localStorage
+    //create an update storage function to check if the current item is still in the storage then update. ?? 
   }
 }
